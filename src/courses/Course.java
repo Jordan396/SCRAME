@@ -3,26 +3,35 @@ package courses;
 import java.io.Serializable;
 import java.util.HashMap;
 
+import assessments.MainComponent;
 import groups.Group;
+import professors.Professor;
+import students.Student;
 
 public class Course implements Serializable {
 
 	private static final long serialVersionUID = 2L;
 
 	private String courseName;
-	private String professorName;
+	private Professor professor;
+	private int numVacanciesPerLectureGroup;
 	private int numTutorialGroups;
 	private int numVacanciesPerTutorialGroup;
 	private int numLaboratoryGroups;
 	private int numVacanciesPerLaboratoryGroup;
 
-	public HashMap<Integer, Group> tutorials;
-	public HashMap<Integer, Group> laboratories;
+	private Group lecture;
+	private HashMap<Integer, Group> tutorials;
+	private HashMap<Integer, Group> laboratories;
+	private HashMap<String, Student>students;
+	
+	private MainComponent examComponent;
+	private MainComponent courseworkComponent;
 
-	public Course(String courseName, String professorName, int numTutorialGroups, int numVacanciesPerTutorialGroup,
+	public Course(String courseName, Professor professor, int numTutorialGroups, int numVacanciesPerTutorialGroup,
 			int numLaboratoryGroups, int numVacanciesPerLaboratoryGroup) {
 		this.courseName = courseName;
-		this.professorName = professorName;
+		this.professor = professor;
 		this.numTutorialGroups = numTutorialGroups;
 		this.numVacanciesPerTutorialGroup = numVacanciesPerTutorialGroup;
 		this.numLaboratoryGroups = numLaboratoryGroups;
@@ -33,10 +42,51 @@ public class Course implements Serializable {
 		for (int tutorialId = 0; tutorialId < numTutorialGroups; tutorialId++) {
 			tutorials.put(tutorialId, new Group(numVacanciesPerTutorialGroup));
 		}
-
 		for (int laboratoryId = 0; laboratoryId < numLaboratoryGroups; laboratoryId++) {
 			tutorials.put(laboratoryId, new Group(numVacanciesPerLaboratoryGroup));
 		}
+	}
+
+	public String getCourseName() {
+		return this.courseName;
+	}
+
+	public boolean hasVacancies() {
+		int vacanciesForGroup = 0;
+
+		if (this.lecture.getNumVacancies() == 0) {
+			return false;
+		}
+		for (int tutorialId = 0; tutorialId < this.numTutorialGroups; tutorialId++) {
+			vacanciesForGroup += tutorials.get(tutorialId).getNumVacancies();
+		}
+		if (vacanciesForGroup == 0) {
+			return false;
+		}
+		vacanciesForGroup = 0;
+		for (int laboratoryId = 0; laboratoryId < this.numLaboratoryGroups; laboratoryId++) {
+			vacanciesForGroup += laboratories.get(laboratoryId).getNumVacancies();
+		}
+		if (vacanciesForGroup == 0) {
+			return false;
+		}
+		return true;
+	}
+
+	public HashMap<Integer, Group> getTutorials() {
+		return this.tutorials;
+	}
+
+	public HashMap<Integer, Group> getLaboratories() {
+		return this.laboratories;
+	}
+	
+	public HashMap<String, Student> getStudents() {
+		return this.students;
+	}
+
+	public Group getLecture() {
+		return this.lecture;
 	}
 
 	public boolean hasTutorial() {
@@ -61,7 +111,20 @@ public class Course implements Serializable {
 		return numLaboratoryGroups;
 	}
 
-	public void printTutorials() {
+	public void printLectureVacancies() {
+		System.out.println("|--------------------------------------------------------|");
+		System.out.println("| Here's a list of lecture groups for this course        |");
+		System.out.println("|--------------------------------------------------------|");
+		System.out.println("| Group Number |               Vacancies                 |");
+		System.out.println("|--------------------------------------------------------|");
+
+		System.out.println(String.format("| %-12d | [%d / %d]%20s|", 1,
+				numVacanciesPerLectureGroup - lecture.getNumVacancies(), numVacanciesPerLectureGroup, ' '));
+
+		System.out.println("|--------------------------------------------------------|");
+	}
+
+	public void printTutorialVacancies() {
 		System.out.println("|--------------------------------------------------------|");
 		System.out.println("| Here's a list of tutorial groups for this course       |");
 		System.out.println("|--------------------------------------------------------|");
@@ -69,12 +132,13 @@ public class Course implements Serializable {
 		System.out.println("|--------------------------------------------------------|");
 		for (int tutorialId = 0; tutorialId < numTutorialGroups; tutorialId++) {
 			System.out.println(String.format("| %-12d | [%d / %d]%20s|", tutorialId + 1,
-					numVacanciesPerTutorialGroup - tutorials.get(tutorialId).getAvailableVacancies(), numVacanciesPerTutorialGroup, ' '));
+					numVacanciesPerTutorialGroup - tutorials.get(tutorialId).getNumVacancies(),
+					numVacanciesPerTutorialGroup, ' '));
 		}
 		System.out.println("|--------------------------------------------------------|");
 	}
 
-	public void printLaboratories() {
+	public void printLaboratoryVacancies() {
 		System.out.println("|--------------------------------------------------------|");
 		System.out.println("| Here's a list of laboratory groups for this course     |");
 		System.out.println("|--------------------------------------------------------|");
@@ -82,8 +146,13 @@ public class Course implements Serializable {
 		System.out.println("|--------------------------------------------------------|");
 		for (int laboratoryId = 0; laboratoryId < numLaboratoryGroups; laboratoryId++) {
 			System.out.println(String.format("| %-12d | [%d / %d]%20s|", laboratoryId,
-					numVacanciesPerLaboratoryGroup - laboratories.get(laboratoryId).getAvailableVacancies(), numVacanciesPerLaboratoryGroup, ' '));
+					numVacanciesPerLaboratoryGroup - laboratories.get(laboratoryId).getNumVacancies(),
+					numVacanciesPerLaboratoryGroup, ' '));
 		}
 		System.out.println("|--------------------------------------------------------|");
+	}
+	
+	public void setExamWeightage(int examWeightage) {
+		this.examComponent = new MainComponent(examWeightage);
 	}
 }
