@@ -3,7 +3,7 @@ package courses;
 import java.io.Serializable;
 import java.util.HashMap;
 
-import assessments.MainComponent;
+import assessments.Component;
 import groups.Group;
 import professors.Professor;
 import students.Student;
@@ -25,8 +25,7 @@ public class Course implements Serializable {
 	private HashMap<Integer, Group> laboratories;
 	private HashMap<String, Student>students;
 	
-	private MainComponent examComponent;
-	private MainComponent courseworkComponent;
+	private HashMap<String, Component> components = null;
 
 	public Course(String courseName, Professor professor, int numTutorialGroups, int numVacanciesPerTutorialGroup,
 			int numLaboratoryGroups, int numVacanciesPerLaboratoryGroup) {
@@ -152,7 +151,69 @@ public class Course implements Serializable {
 		System.out.println("|--------------------------------------------------------|");
 	}
 	
-	public void setExamWeightage(int examWeightage) {
-		this.examComponent = new MainComponent(examWeightage);
+	public void setComponentWeightage(String componentName, int weightage) {
+		if (this.components == null) {
+			this.components = new HashMap<String, Component>();
+		}
+		
+		if (this.components.containsKey(componentName)) {
+			this.components.get(componentName).setWeightage(weightage);
+		}
+		else {
+			this.components.put(componentName, new Component(componentName, weightage));
+		}
 	}
+	
+	public HashMap<String, Component> getComponents() {
+		return this.components;
+	}
+	
+	public void addStudentToCourse(Student student) {
+		if (this.students.containsKey(student.getName())) {
+			return;
+		} else {
+			this.students.put(student.getName(), student);
+		}
+	}
+	
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
