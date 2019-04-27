@@ -7,18 +7,18 @@ public class Component implements Serializable{
 	private static final long serialVersionUID = 10L;
 	
 	private String name;
-	private int weightage;
+	private float weightage;
 	
-	public Component(String name, int weightage) {
+	public Component(String name, float weightage) {
 		this.name = name;
 		this.weightage = weightage;
 	}
 	
-	public int getWeightage() {
+	public float getWeightage() {
 		return this.weightage;
 	}
 	
-	public void setWeightage(int weightage) {
+	public void setWeightage(float weightage) {
 		this.weightage = weightage;
 	}
 	

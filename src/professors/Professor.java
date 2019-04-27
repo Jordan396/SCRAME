@@ -14,6 +14,7 @@ public class Professor implements Serializable {
 
 	public Professor(String name) {
 		this.name = name;
+		this.courses = new HashMap<String, Course>();
 	}
 
 	public void addCourseToProfessor(Course course) {

@@ -32,6 +32,7 @@ public class Student implements Serializable {
 	}
 	
 	public void addCourseToStudent(Course course) {
+		this.results.put(course.getCourseName(), new Result(course));
 		if (this.courses.containsKey(course.getCourseName())) {
 			return;
 		} else {

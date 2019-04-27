@@ -9,20 +9,20 @@ public class Group implements Serializable {
 
 	private static final long serialVersionUID = 5L;
 
-	private int totalGroupSize;
+	private int capacity;
 	private int vacancies;
 	private HashMap<String, Student> registeredStudents = new HashMap<String, Student>();
 
 	public Group(int numVacanciesPerGroup) {
-		this.totalGroupSize = numVacanciesPerGroup;
+		this.capacity = numVacanciesPerGroup;
 		this.vacancies = numVacanciesPerGroup;
 	}
 
-	public int getTotalGroupSize() {
-		return this.totalGroupSize;
+	public int getCapacity() {
+		return this.capacity;
 	}
 
-	public int getNumVacancies() {
+	public int getVacancies() {
 		return this.vacancies;
 	}
 
