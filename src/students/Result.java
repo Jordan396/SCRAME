@@ -11,81 +11,38 @@ public class Result implements Serializable {
 	private static final long serialVersionUID = 9L;
 
 	private Course course;
-	private HashMap<String, Float> rawScores;
+	private HashMap<String, ResultItem> resultItems;
 
 	public Result(Course course) {
 		this.course = course;
-		this.rawScores = new HashMap<String, Float>();
+		this.resultItems = new HashMap<String, ResultItem>();
 	}
 
-	public HashMap<String, Float> getRawScores() {
-		return this.rawScores;
+	public void addResultItem(String name) {
+		this.resultItems.put(name, new ResultItem(name));
 	}
 
-	public boolean enterScore(String componentName, float score) {
-		if ((score < 0) || (score > 100)) {
-			return false;
-		} else {
-			if (rawScores.containsKey(componentName)) {
-				rawScores.replace(componentName, score);
-			} else {
-				rawScores.put(componentName, score);
-			}
-			return true;
+	public void addResultItem(String name, float value) {
+		this.resultItems.put(name, new ResultItem(name, value));
+	}
+
+	public HashMap<String, ResultItem> getResultItems() {
+		return this.resultItems;
+	}
+
+	public float calculateOverallResult() {
+		float overallResult = 0;
+		for (HashMap.Entry<String, ResultItem> resultItem : this.resultItems.entrySet()) {
+			overallResult = overallResult + resultItem.getValue().calculateScore();
 		}
+		return overallResult;
 	}
 
-	public float calculateOverallTotalScore() {
-		float overallScore = 0;
-
-		if (this.rawScores.isEmpty()) {
+	public float calculateResultForComponent(String componentName) {
+		if (!this.resultItems.containsKey(componentName)) {
 			return -1;
 		}
-
-		for (HashMap.Entry<String, Component> entry : this.course.getComponents().entrySet()) {
-			if (this.rawScores.containsKey(entry.getKey())) {
-				overallScore = overallScore + ((entry.getValue().getWeightage() * this.rawScores.get(entry.getKey())));
-			} else {
-				return -1;
-			}
-		}
-		return overallScore;
-	}
-
-	public float calculateOverallExamScore(String examComponentName) {
-
-		if (this.rawScores.isEmpty()) {
-			return -1;
-		}
-
-		if (this.rawScores.containsKey(examComponentName)) {
-			return (this.rawScores.get(examComponentName)
-					* this.course.getComponents().get(examComponentName).getWeightage());
-		} else {
-			return -1;
-		}
-	}
-
-	public float calculateOverallCourseworkScore(String examComponentName) {
-		float overallCourseworkScore = 0;
-		String componentName;
-
-		if (this.rawScores.isEmpty()) {
-			return -1;
-		}
-
-		for (HashMap.Entry<String, Component> entry : this.course.getComponents().entrySet()) {
-			componentName = entry.getValue().getName();
-			if (this.rawScores.containsKey(componentName)){
-				if (!componentName.equals(examComponentName)) {
-					overallCourseworkScore = overallCourseworkScore
-							+ this.rawScores.get(componentName) * entry.getValue().getWeightage();
-				}
-			} else {
-				return -1;
-			}
-		}
-		return overallCourseworkScore;
+		return this.resultItems.get(componentName).calculateScore();
 	}
 
 }

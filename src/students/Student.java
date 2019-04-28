@@ -30,13 +30,14 @@ public class Student implements Serializable {
 	public HashMap<String, Result> getResults() {
 		return this.results;
 	}
-	
+
 	public void addCourseToStudent(Course course) {
-		this.results.put(course.getCourseName(), new Result(course));
-		if (this.courses.containsKey(course.getCourseName())) {
+
+		if (this.courses.containsKey(course.getName())) {
 			return;
 		} else {
-			this.courses.put(course.getCourseName(), course);
+			this.results.put(course.getName(), new Result(course));
+			this.courses.put(course.getName(), course);
 		}
 	}
 }

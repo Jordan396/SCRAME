@@ -18,10 +18,10 @@ public class Professor implements Serializable {
 	}
 
 	public void addCourseToProfessor(Course course) {
-		if (this.courses.containsKey(course.getCourseName())) {
+		if (this.courses.containsKey(course.getName())) {
 			return;
 		} else {
-			this.courses.put(course.getCourseName(), course);
+			this.courses.put(course.getName(), course);
 		}
 	}
 }
