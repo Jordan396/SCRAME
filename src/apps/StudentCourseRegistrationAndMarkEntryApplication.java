@@ -9,17 +9,22 @@ import java.io.ObjectOutputStream;
 import java.util.HashMap;
 import java.util.Scanner;
 
-import assessments.Component;
-import assessments.SubComponent;
+import courses.Component;
 import courses.Course;
+import courses.SubComponent;
 import professors.Professor;
 import students.Result;
 import students.Student;
 
+/**
+ * Application class of the SCRAME system.
+ * 
+ * @author jordan396
+ */
 public class StudentCourseRegistrationAndMarkEntryApplication implements Serializable {
-	
+
 	private static final long serialVersionUID = -4807042539470456086L;
-	static Scanner scanner = new Scanner(System.in);
+
 	private static final String filename = "scrame.ser";
 	private static final String examMainComponentName = "ExamMainComponent";
 	private static final String courseworkMainComponentName = "CourseworkMainComponent";
@@ -27,11 +32,22 @@ public class StudentCourseRegistrationAndMarkEntryApplication implements Seriali
 	private static final String tutorialSessionName = "tutorial";
 	private static final String laboratorySessionName = "lab";
 
-	// Variables to store objects in current instance of SCRAME
+	static final Scanner scanner = new Scanner(System.in);
+
 	HashMap<String, Student> students;
 	HashMap<String, Course> courses;
 	HashMap<String, Professor> professors;
 
+	/**
+	 * This is the main method to start the Student Course Registration and Mark
+	 * Entry Application (SCRAME).
+	 * 
+	 * The method first initialize a
+	 * StudentCourseRegistrationAndMarkEntryApplication object using loadSCRAME()
+	 * method. If the method return null object it means that there is no data or
+	 * the data file has been corrupted. Otherwise, it will read from the data file
+	 * and initialize system.
+	 */
 	public static void main(String[] args) {
 		int menuSelection;
 		StudentCourseRegistrationAndMarkEntryApplication SCRAME = loadSCRAME();
@@ -102,12 +118,30 @@ public class StudentCourseRegistrationAndMarkEntryApplication implements Seriali
 
 	}
 
+	/**
+	 * Constructor for a StudentCourseRegistrationAndMarkEntryApplication object.
+	 * 
+	 * Based on the university setting, every
+	 * StudentCourseRegistrationAndMarkEntryApplication object keeps track of three
+	 * key objects, namely students, courses and professors.
+	 * 
+	 * @return A StudentCourseRegistrationAndMarkEntryApplication object.
+	 */
 	public StudentCourseRegistrationAndMarkEntryApplication() {
 		this.students = new HashMap<String, Student>();
 		this.courses = new HashMap<String, Course>();
 		this.professors = new HashMap<String, Professor>();
 	}
 
+	/**
+	 * The method is used to deserialize the state of the system.
+	 * 
+	 * @return a StudentCourseRegistrationAndMarkEntryApplication object that is
+	 *         saved during the previous execution of the program, null if there is
+	 *         an IOException of ClassNotFoundException. This happens when the
+	 *         system binary file is corrupted or the structure of the program has
+	 *         been modified.
+	 */
 	public static StudentCourseRegistrationAndMarkEntryApplication loadSCRAME() {
 		StudentCourseRegistrationAndMarkEntryApplication SCRAME = null;
 
@@ -129,7 +163,17 @@ public class StudentCourseRegistrationAndMarkEntryApplication implements Seriali
 		return SCRAME;
 	}
 
-	public void saveSCRAME() {
+	/**
+	 * The method is used to serialize the state of the system.
+	 * 
+	 * The serialized object can be deserialized and loaded the next time SCRAME is
+	 * started. This object is stored as the constant String filename, and can be
+	 * used by other SCRAME applications.
+	 * 
+	 * @return true if StudentCourseRegistrationAndMarkEntryApplication was saved
+	 *         successfully; false otherwise.
+	 */
+	public boolean saveSCRAME() {
 		System.out.println("Saving application...");
 		try {
 			// Saving of object in a file
@@ -141,25 +185,58 @@ public class StudentCourseRegistrationAndMarkEntryApplication implements Seriali
 			out.close();
 			file.close();
 			System.out.println("Application saved!");
+			return true;
 		} catch (IOException ex) {
 			System.out.println("IOException caught");
 		}
+		return false;
 	}
 
-	public void addStudent() {
+	/**
+	 * This method is used to add a student to the students HashMap.
+	 * 
+	 * @return false if student is already existing in the HashMap. true if the
+	 *         student object has been added to the students HashMap successfully.
+	 */
+	public boolean addStudent() {
 		String studentName;
 
 		System.out.println("Enter the name of the student you'd like to add:");
 		studentName = getInputString(30);
 		if (this.students.containsKey(studentName)) { // Student by that name already exists
 			System.out.printf("Sorry, student %s already exists!\n", studentName);
-			return;
+			return false;
 		}
 		this.students.put(studentName, new Student(studentName));
 		System.out.println("Student added successfully!");
+		return true;
 	}
 
-	public void addCourse() {
+	/**
+	 * This method is used to add courses to the courses HashMap.
+	 * 
+	 * <p>
+	 * The user will be first asked to enter name of the course. Followed by the
+	 * name of the professor. Since there are in total 3 combination of courses:
+	 * <ul>
+	 * <li>Course with lectures only</li>
+	 * <li>Course with both lectures and tutorials</li>
+	 * <li>Course with lectures, tutorials and laboratories</li>
+	 * </ul>
+	 * The user will be asked whether the course have tutorials first. If one course
+	 * does not have tutorials, it will definitely not have labs. Similarly, the
+	 * user will also be asked whether a course have laboratories.
+	 * 
+	 * <p>
+	 * For each of the tutorial and laboratory, the user will be asked the number of
+	 * groups in tutorial and laboratory sessions and the corresponding number of
+	 * people in each group. For lecture, we assume there is only one lecture group
+	 * for each course, which makes logical sense.
+	 * 
+	 * @return true when course is successfully registered in the system, false when
+	 *         the course has already been added.
+	 */
+	public boolean addCourse() {
 		String courseName;
 		String professorName;
 		Professor professor = null;
@@ -171,7 +248,7 @@ public class StudentCourseRegistrationAndMarkEntryApplication implements Seriali
 		courseName = getInputString(30);
 		if (this.courses.containsKey(courseName)) { // Student by that name already exists
 			System.out.printf("Sorry, the course %s already exists!\n", courseName);
-			return;
+			return false;
 		}
 
 		// Get professor for course
@@ -221,9 +298,29 @@ public class StudentCourseRegistrationAndMarkEntryApplication implements Seriali
 		}
 
 		System.out.println("Course added successfully!");
+		return true;
 	}
 
-	public void registerStudentForCourse() {
+	/**
+	 * This method is used to register a student in a course.
+	 * 
+	 * Based on whether a course has tutorials or labs, the method will prompt user
+	 * to enter the group number the student want to register (for tutorial and
+	 * laboratories) By default, a student will always be registered to the lecture
+	 * group, since every course has a lecture (by assumption).
+	 * 
+	 * @return true if a student has successfully registered for a course, false if
+	 *         there is
+	 *         <ul>
+	 *         <li>No registered students in the system</li>
+	 *         <li>No courses recorded in the system</li>
+	 *         <li>Student does not exist in the system</li>
+	 *         <li>Course does not exist in the system</li>
+	 *         <li>Student already has registered course</li>
+	 *         <li>Course has no more vacancies</li>
+	 *         </ul>
+	 */
+	public boolean registerStudentForCourse() {
 		String studentName;
 		String courseName;
 		int groupId;
@@ -233,13 +330,13 @@ public class StudentCourseRegistrationAndMarkEntryApplication implements Seriali
 		// Check if any students exist
 		if (students.isEmpty()) {
 			System.out.println("There are no students available. Please add a student first.");
-			return;
+			return false;
 		}
 
 		// Check if any courses exist
 		if (courses.isEmpty()) {
 			System.out.println("There are no courses available. Please add a course first.");
-			return;
+			return false;
 		}
 
 		// Print list of students for user's reference
@@ -248,7 +345,7 @@ public class StudentCourseRegistrationAndMarkEntryApplication implements Seriali
 		studentName = getInputString(30);
 		if (!this.students.containsKey(studentName)) { // Student by that name does not exist
 			System.out.printf("Sorry, student %s does not exist!\n", studentName);
-			return;
+			return false;
 		}
 		student = this.students.get(studentName);
 
@@ -258,19 +355,19 @@ public class StudentCourseRegistrationAndMarkEntryApplication implements Seriali
 		courseName = getInputString(30);
 		if (!this.courses.containsKey(courseName)) { // Course by that name does not exist
 			System.out.printf("Sorry, course %s does not exist!\n", courseName);
-			return;
+			return false;
 		}
 		course = this.courses.get(courseName);
 
 		// Check if course has vacancies
 		if (!course.hasVacancies()) {
 			System.out.println("Sorry, this course has no more vacancies.");
-			return;
+			return false;
 		}
 		// Check if student is already registered
 		if (student.getCourses().containsKey(courseName)) {
 			System.out.println("Sorry, student is already registered under this course.");
-			return;
+			return false;
 		}
 
 		// Assign student to course and vice versa
@@ -313,16 +410,27 @@ public class StudentCourseRegistrationAndMarkEntryApplication implements Seriali
 			}
 		}
 		System.out.println("Student registered for course successfully!");
+		return true;
 	}
 
-	public void checkAvailableSlotForCourse() {
+	/**
+	 * The method is used to print the slots of a course as specified by the user.
+	 * 
+	 * @return false if either one of these conditions exist:
+	 *         <ul>
+	 *         <li>No courses available</li>
+	 *         <li>Course does not exist</li>
+	 *         </ul>
+	 *         true otherwise.
+	 */
+	public boolean checkAvailableSlotForCourse() {
 		String courseName;
 		Course course;
 
 		// Check if any courses exist
 		if (courses.isEmpty()) {
 			System.out.println("There are no courses available. Please add a course first.");
-			return;
+			return false;
 		}
 
 		this.printCourses();
@@ -330,16 +438,28 @@ public class StudentCourseRegistrationAndMarkEntryApplication implements Seriali
 		courseName = getInputString(30);
 		if (!this.courses.containsKey(courseName)) { // Course by that name does not exist
 			System.out.printf("Sorry, course %s does not exist!\n", courseName);
-			return;
+			return false;
 		}
 		course = this.courses.get(courseName);
 
 		course.printVacanciesForSession(lectureSessionName);
 		course.printVacanciesForSession(tutorialSessionName);
 		course.printVacanciesForSession(laboratorySessionName);
+		return true;
 	}
 
-	public void printStudentListForCourse() {
+	/**
+	 * The method is used to print the registered students of a course by lecture
+	 * group, tutorial group or lab group.
+	 * 
+	 * @return false if either one of these conditions exist:
+	 *         <ul>
+	 *         <li>No courses available</li>
+	 *         <li>Course does not exist</li>
+	 *         </ul>
+	 *         true otherwise.
+	 */
+	public boolean printStudentListForCourse() {
 		String courseName;
 		Course course;
 		int groupId;
@@ -347,7 +467,7 @@ public class StudentCourseRegistrationAndMarkEntryApplication implements Seriali
 		// Check if any courses exist
 		if (courses.isEmpty()) {
 			System.out.println("There are no courses available. Please add a course first.");
-			return;
+			return false;
 		}
 
 		this.printCourses();
@@ -355,7 +475,7 @@ public class StudentCourseRegistrationAndMarkEntryApplication implements Seriali
 		courseName = getInputString(30);
 		if (!this.courses.containsKey(courseName)) { // Course by that name does not exist
 			System.out.printf("Sorry, course %s does not exist!\n", courseName);
-			return;
+			return false;
 		}
 		course = this.courses.get(courseName);
 
@@ -375,9 +495,31 @@ public class StudentCourseRegistrationAndMarkEntryApplication implements Seriali
 			groupId = getInputInteger(0, course.getSessions().get(laboratorySessionName).getGroups().size() - 1);
 			course.printStudentListForSessionGroup(laboratorySessionName, groupId);
 		}
+		return true;
 	}
 
-	public void enterCourseComponentsWeightage() {
+	/**
+	 * This method is used to enter the assessment weightage of a course.
+	 * 
+	 * By assumption, all courses have 2 main assessment components: coursework and
+	 * examination, and there are only 2 cases:
+	 * <ul>
+	 * <li>Coursework does not have subcomponents</li>
+	 * <li>Coursework has 2 or more subcomponents</li>
+	 * </ul>
+	 * The user is first asked the weightage of examination, and coursework will
+	 * naturally be 100 minus the weight of the examination. Then the user will be
+	 * asked whether the coursework has/does not have subcomponents, and user will
+	 * be prompt to under the weighage of each of the subcomponent.
+	 * 
+	 * @return false if either one of these conditions exist:
+	 *         <ul>
+	 *         <li>No courses available</li>
+	 *         <li>Course does not exist</li>
+	 *         </ul>
+	 *         true otherwise.
+	 */
+	public boolean enterCourseComponentsWeightage() {
 		Course course;
 		String courseName;
 		float examWeightage;
@@ -392,7 +534,7 @@ public class StudentCourseRegistrationAndMarkEntryApplication implements Seriali
 		// Check if any courses exist
 		if (courses.isEmpty()) {
 			System.out.println("There are no courses available. Please add a course first.");
-			return;
+			return false;
 		}
 
 		this.printCourses();
@@ -400,7 +542,7 @@ public class StudentCourseRegistrationAndMarkEntryApplication implements Seriali
 		courseName = scanner.nextLine();
 		if (!this.courses.containsKey(courseName)) { // Course by that name does not exist
 			System.out.printf("Sorry, course %s does not exist!\n", courseName);
-			return;
+			return false;
 		}
 		course = this.courses.get(courseName);
 
@@ -459,9 +601,32 @@ public class StudentCourseRegistrationAndMarkEntryApplication implements Seriali
 			}
 		}
 		System.out.println("Course components weightage assigned successfully!");
+		return true;
 	}
 
-	public void enterCourseworkScore() {
+	/**
+	 * The method is used to enter the coursework score of a student.
+	 * 
+	 * The method will iterate through all the students registered for a course, and
+	 * prompt user to enter the raw coursework score if the coursework does not have
+	 * subcomponent. In the case when coursework has subcomponents, the user will
+	 * enter the raw subcomponent score one by one for each of the registered
+	 * student.
+	 * 
+	 * The method does not check whether a student has already has his coursework
+	 * score entered. So each time the method is called, it will reenter the
+	 * coursework score for all students. Such assumption is made since normally the
+	 * mark will only be entered once, that is at the end of each semester.
+	 * 
+	 * @return false if either one of these conditions exist:
+	 *         <ul>
+	 *         <li>No courses available</li>
+	 *         <li>Course does not exist</li>
+	 *         <li>Course component weightage has not been assigned</li>
+	 *         </ul>
+	 *         true otherwise.
+	 */
+	public boolean enterCourseworkScore() {
 		Course course;
 		String courseName;
 		Result result;
@@ -473,7 +638,7 @@ public class StudentCourseRegistrationAndMarkEntryApplication implements Seriali
 		// Check if any courses exist
 		if (courses.isEmpty()) {
 			System.out.println("There are no courses available. Please add a course first.");
-			return;
+			return false;
 		}
 
 		this.printCourses();
@@ -481,14 +646,14 @@ public class StudentCourseRegistrationAndMarkEntryApplication implements Seriali
 		courseName = scanner.nextLine();
 		if (!this.courses.containsKey(courseName)) { // Course by that name does not exist
 			System.out.printf("Sorry, course %s does not exist!\n", courseName);
-			return;
+			return false;
 		}
 		course = this.courses.get(courseName);
 
 		if ((!course.getComponents().containsKey(courseworkMainComponentName)
 				|| (!course.getComponents().containsKey(examMainComponentName)))) {
 			System.out.println("Components for this course must be set prior to entering score.");
-			return;
+			return false;
 		}
 
 		System.out.printf("Setting score for %s...\n", courseName);
@@ -519,9 +684,29 @@ public class StudentCourseRegistrationAndMarkEntryApplication implements Seriali
 		}
 
 		System.out.println("Coursework score assigned successfully!");
+		return true;
 	}
 
-	public void enterExamScore() {
+	/**
+	 * The method is used to enter the examination score of a student.
+	 * 
+	 * The method will iterate through all the students registered for a course, and
+	 * prompt user to enter the raw examination score for a student.
+	 * 
+	 * Similar to the enterCourseworkScore() method, this method does not check
+	 * whether a student has already has his/her score recorded. This is based on
+	 * the assumption that examination will only be entered once, that is at the end
+	 * of each semester.
+	 * 
+	 * @return false if either one of these conditions exist:
+	 *         <ul>
+	 *         <li>No courses available</li>
+	 *         <li>Course does not exist</li>
+	 *         <li>Course component weightage has not been assigned</li>
+	 *         </ul>
+	 *         true otherwise.
+	 */
+	public boolean enterExamScore() {
 		Course course;
 		String courseName;
 		Result result;
@@ -531,7 +716,7 @@ public class StudentCourseRegistrationAndMarkEntryApplication implements Seriali
 		// Check if any courses exist
 		if (courses.isEmpty()) {
 			System.out.println("There are no courses available. Please add a course first.");
-			return;
+			return false;
 		}
 
 		this.printCourses();
@@ -539,14 +724,14 @@ public class StudentCourseRegistrationAndMarkEntryApplication implements Seriali
 		courseName = getInputString(30);
 		if (!this.courses.containsKey(courseName)) { // Course by that name does not exist
 			System.out.printf("Sorry, course %s does not exist!\n", courseName);
-			return;
+			return false;
 		}
 		course = this.courses.get(courseName);
 
 		if ((!course.getComponents().containsKey(courseworkMainComponentName)
 				|| (!course.getComponents().containsKey(examMainComponentName)))) {
 			System.out.println("Components for this course must be set prior to entering score.");
-			return;
+			return false;
 		}
 
 		System.out.printf("Setting score for %s...\n", courseName);
@@ -565,9 +750,27 @@ public class StudentCourseRegistrationAndMarkEntryApplication implements Seriali
 		}
 
 		System.out.println("Exam score assigned successfully!");
+		return true;
 	}
 
-	public void printCourseStatistics() {
+	/**
+	 * This method is used to print the statistics of a particular course.
+	 * 
+	 * The method will only be able to run if all the students registered under a
+	 * course have their scores entered.
+	 * 
+	 * @return false if either one of these conditions exist:
+	 *         <ul>
+	 *         <li>No courses available</li>
+	 *         <li>Course does not exist</li>
+	 *         <li>Course component weightages have not been assigned</li>
+	 *         <li>No students registered for course selected</li>
+	 *         <li>Coursework scores have not been assigned</li>
+	 *         <li>Exam scores have not been assigned</li>
+	 *         </ul>
+	 *         true otherwise.
+	 */
+	public boolean printCourseStatistics() {
 		Course course;
 		String courseName;
 		Result result;
@@ -580,7 +783,7 @@ public class StudentCourseRegistrationAndMarkEntryApplication implements Seriali
 		// Check if any courses exist
 		if (courses.isEmpty()) {
 			System.out.println("There are no courses available. Please add a course first.");
-			return;
+			return false;
 		}
 
 		this.printCourses();
@@ -588,14 +791,14 @@ public class StudentCourseRegistrationAndMarkEntryApplication implements Seriali
 		courseName = getInputString(30);
 		if (!this.courses.containsKey(courseName)) { // Course by that name does not exist
 			System.out.printf("Sorry, course %s does not exist!\n", courseName);
-			return;
+			return false;
 		}
 		course = this.courses.get(courseName);
 
 		numStudents = course.getStudents().size();
 		if (numStudents == 0) {
 			System.out.println("No students registered for this course. Printing course statistics failed!");
-			return;
+			return false;
 		}
 
 		for (HashMap.Entry<String, Student> student : course.getStudents().entrySet()) {
@@ -603,13 +806,13 @@ public class StudentCourseRegistrationAndMarkEntryApplication implements Seriali
 			score = result.calculateResultForComponent(courseworkMainComponentName);
 			if (score < 0) {
 				System.out.println("Scores have not been assigned yet. Please try again after assigning scores.");
-				return;
+				return false;
 			}
 			courseworkScorePercentage = courseworkScorePercentage + score;
 			score = result.calculateResultForComponent(examMainComponentName);
 			if (score < 0) {
 				System.out.println("Scores have not been assigned yet. Please try again after assigning scores.");
-				return;
+				return false;
 			}
 			examScorePercentage = examScorePercentage + score;
 		}
@@ -625,16 +828,30 @@ public class StudentCourseRegistrationAndMarkEntryApplication implements Seriali
 		System.out.println(String.format("| OVERALL EXAM SCORE       | %.2f", examScorePercentage));
 		System.out.println(String.format("| OVERALL COURSEWORK SCORE | %.2f", courseworkScorePercentage));
 		System.out.println("|----------------------------------------------------------|");
+		return true;
 	}
 
-	public void printStudentTranscript() {
+	/**
+	 * This method is used to print the transcript of a selected student.
+	 * 
+	 * For a student, this method will print all the courses he has registered and
+	 * those that have all the marks entered.
+	 * 
+	 * @return false if either one of these conditions exist:
+	 *         <ul>
+	 *         <li>No students available</li>
+	 *         <li>Student does not exist</li>
+	 *         </ul>
+	 *         true otherwise.
+	 */
+	public boolean printStudentTranscript() {
 		Student student;
 		String studentName;
 
 		// Check if any students exist
 		if (students.isEmpty()) {
 			System.out.println("There are no students available. Please add a student first.");
-			return;
+			return false;
 		}
 
 		// Print list of students for user's reference
@@ -643,7 +860,7 @@ public class StudentCourseRegistrationAndMarkEntryApplication implements Seriali
 		studentName = getInputString(30);
 		if (!this.students.containsKey(studentName)) { // Student by that name does not exist
 			System.out.printf("Sorry, student %s does not exist!\n", studentName);
-			return;
+			return false;
 		}
 		student = this.students.get(studentName);
 
@@ -651,21 +868,30 @@ public class StudentCourseRegistrationAndMarkEntryApplication implements Seriali
 		System.out.println(String.format("| TRANSCRIPT: %-42s |", studentName));
 		System.out.println("|--------------------------------------------------------|");
 		for (HashMap.Entry<String, Result> result : student.getResults().entrySet()) {
-			System.out.println(String.format("| %-32s | %.2f ", result.getKey(), result.getValue().calculateOverallResult()));
+			System.out.println(
+					String.format("| %-32s | %.2f ", result.getKey(), result.getValue().calculateOverallResult()));
 		}
 		System.out.println("|--------------------------------------------------------|");
-		System.out.println("| Score of -1 means:                                     |");
+		System.out.println("| Score of 0 means:                                      |");
 		System.out.println("| -> Either student has not been assigned score or;      |");
-		System.out.println("| -> Course has not been assigned component weightages   |");
+		System.out.println("| -> Course has not been assigned weightages or;         |");
+		System.out.println("| -> Student scored 0                                    |");
 		System.out.println("|--------------------------------------------------------|");
+		return true;
 	}
 
+	/**
+	 * This method causes the application to exit gracefully.
+	 */
 	public void exitApplication() {
 		System.out.println("Exiting application...");
 		scanner.close();
 		System.exit(0);
 	}
 
+	/**
+	 * This method prints a list of all students registed in the application.
+	 */
 	public void printStudents() {
 		System.out.println("|----------------------------------------------------------|");
 		System.out.println("|                     Student List                         |");
@@ -676,6 +902,9 @@ public class StudentCourseRegistrationAndMarkEntryApplication implements Seriali
 		System.out.println("|----------------------------------------------------------|");
 	}
 
+	/**
+	 * This method prints a list of all courses registed in the application.
+	 */
 	public void printCourses() {
 		System.out.println("|----------------------------------------------------------|");
 		System.out.println("|                     Course List                          |");
@@ -686,6 +915,16 @@ public class StudentCourseRegistrationAndMarkEntryApplication implements Seriali
 		System.out.println("|----------------------------------------------------------|");
 	}
 
+	/**
+	 * This method reads in a string of a specified maximum length from the user.
+	 * 
+	 * This method continuously prompts user for a string until a valid string is
+	 * provided.
+	 * 
+	 * @param maxLength Maximum length of the string
+	 * 
+	 * @return A valid string from the user.
+	 */
 	public String getInputString(int maxLength) {
 		String input;
 
@@ -697,6 +936,17 @@ public class StudentCourseRegistrationAndMarkEntryApplication implements Seriali
 		return input;
 	}
 
+	/**
+	 * This method reads in an integer within a specified range from the user.
+	 * 
+	 * This method continuously prompts user for an integer until a valid integer is
+	 * provided.
+	 * 
+	 * @param lower Lower bound of the input integer
+	 * @param upper Upper bound of the input integer
+	 * 
+	 * @return A valid integer from the user.
+	 */
 	public int getInputInteger(int lower, int upper) {
 		int input;
 
@@ -718,6 +968,17 @@ public class StudentCourseRegistrationAndMarkEntryApplication implements Seriali
 		return input;
 	}
 
+	/**
+	 * This method reads in a float within a specified range from the user.
+	 * 
+	 * This method continuously prompts user for a float until a valid float is
+	 * provided.
+	 * 
+	 * @param lower Lower bound of the input float
+	 * @param upper Upper bound of the input float
+	 * 
+	 * @return A valid float from the user.
+	 */
 	public float getInputFloat(int lower, int upper) {
 		float input;
 
