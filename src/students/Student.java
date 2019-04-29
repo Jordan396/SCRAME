@@ -7,8 +7,7 @@ import courses.Course;
 
 public class Student implements Serializable {
 
-	private static final long serialVersionUID = 4L;
-
+	private static final long serialVersionUID = -664614176542581931L;
 	private String name;
 	private HashMap<String, Course> courses;
 	private HashMap<String, Result> results;

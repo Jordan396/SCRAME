@@ -7,8 +7,7 @@ import students.Student;
 
 public class Group implements Serializable {
 
-	private static final long serialVersionUID = 5L;
-
+	private static final long serialVersionUID = -5454488238928894287L;
 	private int capacity;
 	private int vacancies;
 	private HashMap<String, Student> registeredStudents = new HashMap<String, Student>();

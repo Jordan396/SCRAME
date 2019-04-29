@@ -17,8 +17,8 @@ import students.Result;
 import students.Student;
 
 public class StudentCourseRegistrationAndMarkEntryApplication implements Serializable {
-
-	private static final long serialVersionUID = 1L;
+	
+	private static final long serialVersionUID = -4807042539470456086L;
 	static Scanner scanner = new Scanner(System.in);
 	private static final String filename = "scrame.ser";
 	private static final String examMainComponentName = "ExamMainComponent";
@@ -140,6 +140,7 @@ public class StudentCourseRegistrationAndMarkEntryApplication implements Seriali
 			out.writeObject(this);
 			out.close();
 			file.close();
+			System.out.println("Application saved!");
 		} catch (IOException ex) {
 			System.out.println("IOException caught");
 		}
@@ -435,7 +436,10 @@ public class StudentCourseRegistrationAndMarkEntryApplication implements Seriali
 					} else {
 						subcomponentExists = course.getComponents().get(courseworkMainComponentName).getSubcomponents()
 								.containsKey(subcomponentName);
-						System.out.println("Repeated subcomponent names are not allowed!");
+						if (subcomponentExists) {
+							System.out.println("Repeated subcomponent names are not allowed!");
+						}
+
 					}
 				}
 
@@ -647,7 +651,7 @@ public class StudentCourseRegistrationAndMarkEntryApplication implements Seriali
 		System.out.println(String.format("| TRANSCRIPT: %-42s |", studentName));
 		System.out.println("|--------------------------------------------------------|");
 		for (HashMap.Entry<String, Result> result : student.getResults().entrySet()) {
-			System.out.println(String.format("| %-32s | %.2f ", result.getValue().calculateOverallResult()));
+			System.out.println(String.format("| %-32s | %.2f ", result.getKey(), result.getValue().calculateOverallResult()));
 		}
 		System.out.println("|--------------------------------------------------------|");
 		System.out.println("| Score of -1 means:                                     |");

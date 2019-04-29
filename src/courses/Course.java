@@ -9,8 +9,7 @@ import students.Student;
 
 public class Course implements Serializable {
 
-	private static final long serialVersionUID = 2L;
-
+	private static final long serialVersionUID = -6918510535972049633L;
 	private String name;
 	private Professor professor;
 	private HashMap<String, Session> sessions;
@@ -82,7 +81,7 @@ public class Course implements Serializable {
 
 		for (HashMap.Entry<String, Student> student : this.getSessions().get(sessionName).getGroups().get(groupId)
 				.getRegisteredStudents().entrySet()) {
-			System.out.printf("| %-55s |\n", student.getKey());
+			System.out.printf("| %-54s |\n", student.getKey());
 		}
 		System.out.println("|--------------------------------------------------------|");
 	}

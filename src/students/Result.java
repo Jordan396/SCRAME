@@ -8,8 +8,7 @@ import courses.Course;
 
 public class Result implements Serializable {
 
-	private static final long serialVersionUID = 9L;
-
+	private static final long serialVersionUID = 6920288657302284965L;
 	private Course course;
 	private HashMap<String, ResultItem> resultItems;
 
