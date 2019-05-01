@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>apps.StudentCourseRegistrationAndMarkEntryApplication</OriginalElement>
+  <nodes>
+    <node x="42.3125" y="594.5">professors.Professor</node>
+    <node x="789.9272800390397" y="359.0">courses.Group</node>
+    <node x="783.5625" y="594.0">courses.Session</node>
+    <node x="1227.463060997847" y="1310.0">students.Result</node>
+    <node x="605.3125" y="865.0">courses.Course</node>
+    <node x="358.3125" y="582.0">courses.MainComponent</node>
+    <node x="460.0665332200693" y="130.5">courses.Component</node>
+    <node x="459.31249999999994" y="1611.0">apps.StudentCourseRegistrationAndMarkEntryApplication</node>
+    <node x="318.65228003903974" y="408.0">courses.SubComponent</node>
+    <node x="1361.8161689279286" y="901.0">students.ResultItem</node>
+    <node x="1040.3415332200693" y="106.0">students.Student</node>
+    <node x="711.3415332200693" y="0.0">java.io.Serializable</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="students.Result" target="students.ResultItem">
+      <point x="76.22222222222223" y="-110.5" />
+      <point x="1475.1852832200693" y="1270.0" />
+      <point x="1519.8161689279286" y="1270.0" />
+      <point x="0.0" y="146.5" />
+    </edge>
+    <edge source="students.Result" target="java.io.Serializable">
+      <point x="152.4444444444444" y="-110.5" />
+      <point x="1551.4075054422915" y="1290.0" />
+      <point x="1688.3161689279286" y="1290.0" />
+      <point x="1688.3161689279286" y="56.0" />
+      <point x="834.1193109978472" y="56.0" />
+      <point x="57.77777777777783" y="13.0" />
+    </edge>
+    <edge source="courses.MainComponent" target="courses.SubComponent">
+      <point x="-76.39999999999998" y="-86.5" />
+      <point x="472.9125" y="562.0" />
+      <point x="474.27728003903974" y="562.0" />
+      <point x="31.125" y="37.5" />
+    </edge>
+    <edge source="courses.Course" target="courses.Group">
+      <point x="85.31250000000006" y="-182.5" />
+      <point x="885.625" y="805.0" />
+      <point x="1069.866327376936" y="805.0" />
+      <point x="1069.866327376936" y="562.0" />
+      <point x="1097.9272800390397" y="562.0" />
+      <point x="132.0" y="86.5" />
+    </edge>
+    <edge source="courses.Session" target="courses.Group">
+      <point x="-33.0" y="-74.5" />
+      <point x="882.5625" y="562.0" />
+      <point x="833.9272800390397" y="562.0" />
+      <point x="-132.0" y="86.5" />
+    </edge>
+    <edge source="courses.Component" target="java.io.Serializable">
+      <point x="0.0" y="-62.0" />
+      <point x="571.5665332200692" y="66.0" />
+      <point x="747.4526443311804" y="66.0" />
+      <point x="-28.888888888888914" y="13.0" />
+    </edge>
+    <edge source="apps.StudentCourseRegistrationAndMarkEntryApplication" target="students.Result">
+      <point x="150.20833333333337" y="-386.0" />
+      <point x="867.0208333333333" y="1571.0" />
+      <point x="1398.963060997847" y="1571.0" />
+      <point x="0.0" y="110.5" />
+    </edge>
+    <edge source="professors.Professor" target="java.io.Serializable">
+      <point x="1.1368683772161603E-13" y="-74.0" />
+      <point x="190.3125000000001" y="552.0" />
+      <point x="154.53770584313327" y="552.0" />
+      <point x="154.53770584313327" y="56.0" />
+      <point x="733.0081998867358" y="56.0" />
+      <point x="-43.33333333333337" y="13.0" />
+    </edge>
+    <edge source="students.Student" target="java.io.Serializable">
+      <point x="0.0" y="-86.5" />
+      <point x="1182.3415332200693" y="76.0" />
+      <point x="805.2304221089582" y="76.0" />
+      <point x="28.888888888888914" y="13.0" />
+    </edge>
+    <edge source="courses.MainComponent" target="courses.Component">
+      <point x="76.39999999999998" y="-86.5" />
+      <point x="625.7125" y="562.0" />
+      <point x="607.9415332200692" y="562.0" />
+      <point x="607.9415332200692" y="339.0" />
+      <point x="599.4415332200692" y="339.0" />
+      <point x="27.875" y="62.0" />
+    </edge>
+    <edge source="courses.Course" target="courses.MainComponent">
+      <point x="-85.31249999999994" y="-182.5" />
+      <point x="715.0" y="805.0" />
+      <point x="421.97916666666663" y="805.0" />
+      <point x="-127.33333333333337" y="86.5" />
+    </edge>
+    <edge source="courses.Course" target="courses.Session">
+      <point x="60.93750000000006" y="-182.5" />
+      <point x="861.25" y="795.0" />
+      <point x="1003.5625" y="795.0" />
+      <point x="88.0" y="74.5" />
+    </edge>
+    <edge source="apps.StudentCourseRegistrationAndMarkEntryApplication" target="courses.Course">
+      <point x="21.45833333333337" y="-386.0" />
+      <point x="738.2708333333333" y="1591.0" />
+      <point x="722.3125" y="1591.0" />
+      <point x="-78.0" y="182.5" />
+    </edge>
+    <edge source="apps.StudentCourseRegistrationAndMarkEntryApplication" target="java.io.Serializable">
+      <point x="-236.0416666666664" y="-386.0" />
+      <point x="480.77083333333354" y="1591.0" />
+      <point x="0.0" y="1591.0" />
+      <point x="0.0" y="46.0" />
+      <point x="718.5637554422915" y="46.0" />
+      <point x="-57.77777777777783" y="13.0" />
+    </edge>
+    <edge source="students.Student" target="students.Result">
+      <point x="65.53846153846155" y="86.5" />
+      <point x="1247.8799947585308" y="329.0" />
+      <point x="1297.3125" y="329.0" />
+      <point x="1297.3125" y="1260.0" />
+      <point x="1360.8519498867358" y="1260.0" />
+      <point x="-38.11111111111114" y="-110.5" />
+    </edge>
+    <edge source="apps.StudentCourseRegistrationAndMarkEntryApplication" target="courses.SubComponent">
+      <point x="-193.12499999999977" y="-386.0" />
+      <point x="523.6875000000002" y="1581.0" />
+      <point x="31.8125" y="1581.0" />
+      <point x="31.8125" y="562.0" />
+      <point x="349.77728003903974" y="562.0" />
+      <point x="-93.375" y="37.5" />
+    </edge>
+    <edge source="courses.Group" target="java.io.Serializable">
+      <point x="-132.0" y="-86.5" />
+      <point x="833.9272800390397" y="339.0" />
+      <point x="844.8663273769359" y="339.0" />
+      <point x="844.8663273769359" y="86.0" />
+      <point x="790.7859776645137" y="86.0" />
+      <point x="14.444444444444457" y="13.0" />
+    </edge>
+    <edge source="apps.StudentCourseRegistrationAndMarkEntryApplication" target="students.Student">
+      <point x="236.04166666666663" y="-386.0" />
+      <point x="952.8541666666665" y="1591.0" />
+      <point x="1710.3161689279286" y="1591.0" />
+      <point x="1710.3161689279286" y="299.0" />
+      <point x="1313.4184562969922" y="299.0" />
+      <point x="131.0769230769231" y="86.5" />
+    </edge>
+    <edge source="courses.Group" target="students.Student">
+      <point x="132.0" y="-86.5" />
+      <point x="1097.9272800390397" y="339.0" />
+      <point x="1094.9569178354539" y="339.0" />
+      <point x="-87.38461538461539" y="86.5" />
+    </edge>
+    <edge source="professors.Professor" target="courses.Course">
+      <point x="126.85714285714278" y="74.0" />
+      <point x="317.1696428571428" y="815.0" />
+      <point x="690.625" y="815.0" />
+      <point x="-109.68749999999994" y="-182.5" />
+    </edge>
+    <edge source="apps.StudentCourseRegistrationAndMarkEntryApplication" target="professors.Professor">
+      <point x="-107.29166666666652" y="-386.0" />
+      <point x="609.5208333333335" y="1561.0" />
+      <point x="105.74107142857144" y="1561.0" />
+      <point x="-84.57142857142856" y="74.0" />
+    </edge>
+    <edge source="courses.Course" target="professors.Professor">
+      <point x="-182.81249999999994" y="-182.5" />
+      <point x="617.5" y="845.0" />
+      <point x="190.3125" y="845.0" />
+      <point x="0.0" y="74.0" />
+    </edge>
+    <edge source="courses.Course" target="java.io.Serializable">
+      <point x="-12.187499999999943" y="-182.5" />
+      <point x="788.125" y="775.0" />
+      <point x="750.8125" y="775.0" />
+      <point x="750.8125" y="76.0" />
+      <point x="761.8970887756248" y="76.0" />
+      <point x="-14.444444444444457" y="13.0" />
+    </edge>
+    <edge source="courses.Session" target="java.io.Serializable">
+      <point x="-99.0" y="-74.5" />
+      <point x="816.5625" y="562.0" />
+      <point x="761.8125" y="562.0" />
+      <point x="761.8125" y="86.0" />
+      <point x="776.3415332200693" y="86.0" />
+      <point x="0.0" y="13.0" />
+    </edge>
+    <edge source="students.ResultItem" target="java.io.Serializable">
+      <point x="0.0" y="-146.5" />
+      <point x="1519.8161689279286" y="66.0" />
+      <point x="819.6748665534026" y="66.0" />
+      <point x="43.33333333333337" y="13.0" />
+    </edge>
+    <edge source="students.Student" target="courses.Course">
+      <point x="5.6843418860808015E-14" y="86.5" />
+      <point x="1182.3415332200693" y="339.0" />
+      <point x="1185.4272800390397" y="339.0" />
+      <point x="1185.4272800390397" y="845.0" />
+      <point x="983.125" y="845.0" />
+      <point x="182.81250000000006" y="-182.5" />
+    </edge>
+    <edge source="courses.Course" target="students.Student">
+      <point x="158.43750000000006" y="-182.5" />
+      <point x="958.75" y="835.0" />
+      <point x="1174.4272800390397" y="835.0" />
+      <point x="1174.4272800390397" y="319.0" />
+      <point x="1160.4953793739155" y="319.0" />
+      <point x="-21.84615384615381" y="86.5" />
+    </edge>
+    <edge source="students.Result" target="courses.Course">
+      <point x="-152.44444444444446" y="-110.5" />
+      <point x="1246.5186165534026" y="1290.0" />
+      <point x="878.3125" y="1290.0" />
+      <point x="78.0" y="182.5" />
+    </edge>
+    <edge source="courses.SubComponent" target="courses.Component">
+      <point x="-62.25" y="-37.5" />
+      <point x="380.90228003903974" y="339.0" />
+      <point x="487.9415332200693" y="339.0" />
+      <point x="-83.625" y="62.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="0.3748953974895399" x="1030.1885077161487" y="110.29446804385191" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Properties</Category>
+    <Category>Methods</Category>
+    <Category>Constructors</Category>
+    <Category>Fields</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+
